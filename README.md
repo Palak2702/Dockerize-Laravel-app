@@ -20,7 +20,7 @@ Project Structure
 
 Setup Instructions
 1. Clone the Repository
-git clone https://github.com/yourusername/laravel-8-crud.git
+git clone https://github.com/Palak2702/laravel-8-crud.git
 cd laravel-8-crud
 
 Replace yourusername with your GitHub username.
@@ -37,7 +37,7 @@ DB_PASSWORD=secret
 
 3. Pull or Build the Docker Image
 
-Pull from Docker Hub:docker pull yourusername/laravel-8-crud-php:latest
+Pull from Docker Hub:docker pull palakk1234/laravel-8-crud-php:latest
 
 
 Or Build Locally:docker-compose build
@@ -97,7 +97,7 @@ chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 
 Docker Hub
-The PHP service image is available at yourusername/laravel-8-crud-php:latest. Pull it with:
+The PHP service image is available at palakk1234/laravel-8-crud-php:latest. Pull it with:
 docker pull yourusername/laravel-8-crud-php:latest
 
 Notes
