@@ -1,0 +1,50 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-8-crud-php
+    container_name: laravel-8-crud-php-1
+    working_dir: /var/www
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - mysql
+    environment:
+      - APP_ENV=${APP_ENV}
+      - DB_HOST=mysql
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    entrypoint: ["/var/www/docker/entrypoint.sh"]
+    networks:
+      - laravel-8-crud
+  mysql:
+    image: mysql:5.7
+    container_name: laravel-8-crud-mysql-1
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: products
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: palak
+      MYSQL_PASSWORD: secret
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - laravel-8-crud
+
+networks:
+  laravel-8-crud:
+    driver: bridge
+
+volumes:
+  db-data:
