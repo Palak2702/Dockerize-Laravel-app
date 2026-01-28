@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+
+
+set -e
 
 # Install dependencies if not installed
 if [ ! -f "vendor/autoload.php" ]; then
@@ -11,7 +14,7 @@ if [ ! -f ".env" ]; then
     cp .env.example .env
 else
     echo "env file exists."
-fi
+fi  
 
 echo "Waiting for MySQL..."
 for i in {30..0}; do

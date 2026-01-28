@@ -1,3 +1,9 @@
+*.sh text eol=lf
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+docker-compose.yaml text eol=lf
+
+
 /node_modules
 /public/hot
 /storage/*.key
