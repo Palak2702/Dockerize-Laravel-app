@@ -32,7 +32,7 @@ pipeline {
         stage('Deploy on EC2') {
             steps {
                 sh '''
-                cd /home/ubuntu
+                cd /opt/laravel-app
                 docker compose down || true
                 docker compose pull
                 docker compose up -d
