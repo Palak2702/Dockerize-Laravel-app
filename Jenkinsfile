@@ -3,19 +3,18 @@ pipeline {
 
     environment {
         IMAGE_NAME = "palakk1234/laravel-8-crud"
+        EC2_IP = "54.210.181.90"
     }
 
     stages {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                docker build -t $IMAGE_NAME:latest .
-                '''
+                sh 'docker build -t $IMAGE_NAME:latest .'
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Login & Push') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-creds',
@@ -24,24 +23,24 @@ pipeline {
                 )]) {
                     sh '''
                     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker push $IMAGE_NAME:latest
                     '''
                 }
             }
         }
 
-        stage('Push Image') {
-            steps {
-                sh 'docker push $IMAGE_NAME:latest'
-            }
-        }
-
         stage('Deploy on EC2') {
             steps {
-                sh '''
-                docker compose down || true
-                docker compose pull
-                docker compose up -d
-                '''
+                sshagent(['ec2-key']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@$EC2_IP << EOF
+                    cd /home/ubuntu
+                    docker compose down || true
+                    docker compose pull
+                    docker compose up -d
+                    EOF
+                    '''
+                }
             }
         }
     }
