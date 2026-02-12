@@ -6,4 +6,5 @@ services:
       - "8000:8000"
     env_file:
       - .env
+    entrypoint: ["sh", "/var/www/docker/entrypoint.sh"]  
     restart: unless-stopped
