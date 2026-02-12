@@ -7,12 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/Palak2702/Dockerize-Laravel-app.git'              
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh '''
@@ -21,16 +15,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                sh '''
-                echo "Running basic checks..."
-                php -v
-                '''
-            }
-        }
-
-        stage('Push Docker Image') {
+        stage('Login to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-creds',
@@ -38,19 +23,24 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh '''
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    docker push $IMAGE_NAME:latest
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     '''
                 }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'docker push $IMAGE_NAME:latest'
             }
         }
 
         stage('Deploy on EC2') {
             steps {
                 sh '''
-                docker-compose down
-                docker-compose pull
-                docker-compose up -d
+                docker compose down || true
+                docker compose pull
+                docker compose up -d
                 '''
             }
         }
