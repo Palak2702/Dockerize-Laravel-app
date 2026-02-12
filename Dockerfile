@@ -10,22 +10,15 @@ COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy only composer files first (for better caching)
-COPY composer.json composer.lock ./
-
-# Install dependencies at BUILD time (IMPORTANT)
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# Now copy rest of application
+# Copy entire project first (IMPORTANT for Laravel)
 COPY . .
 
-# Set permissions
+# Install dependencies AFTER full code is copied
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Set correct permissions
 RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
 
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
-
-
-
-
