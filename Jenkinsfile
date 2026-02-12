@@ -31,16 +31,12 @@ pipeline {
 
         stage('Deploy on EC2') {
             steps {
-                sshagent(['ec2-key']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@$EC2_IP << EOF
-                    cd /home/ubuntu
-                    docker compose down || true
-                    docker compose pull
-                    docker compose up -d
-                    EOF
-                    '''
-                }
+                sh '''
+                cd /home/ubuntu
+                docker compose down || true
+                docker compose pull
+                docker compose up -d
+                '''
             }
         }
     }
