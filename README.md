@@ -1,10 +1,10 @@
 
 #  Laravel CI/CD Deployment using Docker, Jenkins & AWS EC2
-Images are added for pipeline flow "all_images_of_ci_cd"
 
----
 
-## Project Overview
+
+
+## Project Overview (Images are added for pipeline flow "all_images_of_ci_cd")
 
 This project demonstrates a complete CI/CD pipeline for a Laravel application using:
 
