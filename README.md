@@ -1,5 +1,6 @@
 
 #  Laravel CI/CD Deployment using Docker, Jenkins & AWS EC2
+Images are added for pipeline flow "all_images_of_ci_cd"
 
 ---
 
