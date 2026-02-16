@@ -1,9 +1,9 @@
 
-# 🚀 Laravel CI/CD Deployment using Docker, Jenkins & AWS EC2
+#  Laravel CI/CD Deployment using Docker, Jenkins & AWS EC2
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 This project demonstrates a complete CI/CD pipeline for a Laravel application using:
 
@@ -24,7 +24,7 @@ The objective of this project was to automate:
 
 ---
 
-# 🏗️ Architecture Flow
+#  Architecture Flow
 
 ```
 Developer → GitHub → Jenkins → Docker Build → Docker Hub → EC2 Deployment → Live Application
@@ -32,7 +32,7 @@ Developer → GitHub → Jenkins → Docker Build → Docker Hub → EC2 Deploym
 
 ---
 
-# 🧰 Tech Stack Used
+#  Tech Stack Used
 
 * PHP 7.1.3
 * Laravel
@@ -174,7 +174,7 @@ The pipeline performs:
 
 ---
 
-## ⚠ Errors Faced in Jenkins & Fixes
+##  Errors Faced in Jenkins & Fixes
 
 | Error                    | Reason                           | Solution                          |
 | ------------------------ | -------------------------------- | --------------------------------- |
@@ -198,7 +198,7 @@ The pipeline performs:
 
 ---
 
-# 📚 Key Learnings
+#  Key Learnings
 
 * Environment consistency is critical
 * Docker permissions are a common blocker
@@ -209,7 +209,7 @@ The pipeline performs:
 
 ---
 
-# 🏆 DevOps Skills Demonstrated
+#  DevOps Skills 
 
 ✔ Docker Image Creation
 ✔ Container Lifecycle Management
@@ -221,21 +221,12 @@ The pipeline performs:
 
 ---
 
-# 🚀 Future Improvements
+#  Future Improvements
 
 * Add Nginx reverse proxy
 * Add MySQL as a separate Docker container
-* Implement SSL using Let's Encrypt
-* Configure GitHub Webhooks
-* Add Kubernetes-based deployment
-* Implement Zero-Downtime Deployment
 
----
 
-# 👩‍💻 Author
 
-Palak Khandelwal
-Aspiring AWS DevOps Engineer
-India 🇮🇳
 
 
