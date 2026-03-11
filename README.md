@@ -1,233 +1,140 @@
+# Dockerized Laravel Application with CI/CD Pipeline on AWS
 
-#  Laravel CI/CD Deployment using Docker, Jenkins & AWS EC2
+## Project Overview
 
+This project demonstrates how a **Laravel web application can be containerized using Docker and deployed through an automated CI/CD pipeline** on AWS infrastructure.
 
+The goal of this project is to simulate a **real DevOps deployment workflow**, where application code changes are automatically built, packaged, and deployed to a cloud server with minimal manual intervention.
 
-
-## Project Overview (Images are added for pipeline flow "all_images_of_ci_cd")
-
-This project demonstrates a complete CI/CD pipeline for a Laravel application using:
-
-* PHP 7.1.3 (initial local setup using WAMP)
-* Docker (Application Containerization)
-* Jenkins (CI/CD Automation)
-* AWS EC2 (Production Server)
-* GitHub (Source Code Management)
-* Docker Hub (Image Registry)
-
-The objective of this project was to automate:
-
-* Application build
-* Docker image creation
-* Image push to Docker Hub
-* Deployment on AWS EC2
-* Automatic container restart on new builds
+The application is hosted on an **AWS EC2 instance**, connected to an **Amazon RDS database**, and served using **Nginx**. Docker is used to ensure consistent environments across development and deployment.
 
 ---
 
-#  Architecture Flow
+## Architecture Overview
+
+The deployment pipeline follows this workflow:
 
 ```
-Developer → GitHub → Jenkins → Docker Build → Docker Hub → EC2 Deployment → Live Application
+Developer pushes code to GitHub
+        ↓
+Jenkins Pipeline Triggered
+        ↓
+Docker Image Built
+        ↓
+Image Deployed to AWS EC2
+        ↓
+Application Container Runs
+        ↓
+Application connects to AWS RDS database
 ```
 
----
-
-#  Tech Stack Used
-
-* PHP 7.1.3
-* Laravel
-* Docker
-* Docker Compose
-* Jenkins
-* AWS EC2 (Ubuntu)
-* GitHub
-* Docker Hub
+This architecture helps automate deployments and reduce configuration issues between environments.
 
 ---
 
-# 🔹 Step 1: Dockerizing the Laravel Application
+## Technologies Used
 
-Created the following files:
-
-* `Dockerfile`
-* `docker-compose.yml`
-
-These files are included in this repository.
+* **Laravel (PHP)** – Backend application framework
+* **Docker** – Containerization of the application
+* **Jenkins** – CI/CD automation pipeline
+* **AWS EC2** – Application hosting server
+* **AWS RDS** – Managed MySQL database
+* **Nginx** – Reverse proxy and web server
+* **Linux** – Server environment
+* **GitHub** – Source code management
 
 ---
 
-## 🐳 Docker Commands Used
+## Key DevOps Concepts Implemented
 
-```bash
-# Build Docker Image
-docker build -t laravel-app .
+### 1. Containerization
 
-# Run Container
-docker run -d -p 8000:80 --name laravel-container laravel-app
+The Laravel application is packaged inside a Docker container along with all required dependencies.
+This ensures the application runs consistently across development, testing, and production environments.
 
-# Check Running Containers
-docker ps
+### 2. CI/CD Automation
 
-# View Logs
-docker logs laravel-container
+A Jenkins pipeline automates the deployment process:
 
-# Stop Container
-docker stop laravel-container
+* Pulls latest code from GitHub
+* Builds Docker image
+* Deploys the updated container on AWS EC2
 
-# Remove Container
-docker rm laravel-container
+This reduces manual deployment steps and improves reliability.
+
+### 3. Cloud Deployment
+
+The application is deployed on an **AWS EC2 instance** while the database runs on **Amazon RDS**, providing a managed and scalable database service.
+
+
+---
+
+## Repository Structure
+
 ```
-
----
-
-# 🔹 Step 2: Push Docker Image to Docker Hub
-
-```bash
-# Tag Image
-docker tag laravel-app username/laravel-app
-
-# Login to Docker Hub
-docker login
-
-# Push Image
-docker push username/laravel-app
+Dockerize-Laravel-app
+│
+├── Dockerfile
+├── docker-compose.yml
+├── Jenkinsfile
+├── src/
+│   └── Laravel Application
+└── README.md
 ```
 
 ---
 
-# 🔹 Step 3: AWS EC2 Server Setup
+## Deployment Workflow
 
-Created an EC2 instance on AWS with:
-
-* Ubuntu OS
-* Opened ports: 22 (SSH), 80 (HTTP), 8080 (Jenkins)
-
----
-
-## Install Docker on EC2
-
-```bash
-sudo apt update
-sudo apt install docker.io -y
-sudo systemctl start docker
-sudo systemctl enable docker
-
-# Add ubuntu user to docker group
-sudo usermod -aG docker ubuntu
-```
-
-Re-login to apply group changes.
+1. Developer pushes code changes to GitHub
+2. Jenkins pipeline is triggered automatically
+3. Jenkins builds a Docker image for the application
+4. The Docker container is deployed on AWS EC2
+5. Nginx routes incoming requests to the application container
+6. The application connects to the RDS database
 
 ---
 
-## Deploy Application on EC2
+## Screenshots
 
-```bash
-# Pull Image
-docker pull username/laravel-app
+* Jenkins pipeline execution
+* Docker container running
+* AWS EC2 instance dashboard
+* Application running in browser
+* Architecture diagram (optional)
 
-# Run Container on Port 80
-docker run -d -p 80:80 --name laravel-container username/laravel-app
-```
-
----
-
-## ⚠ Errors Faced on EC2 & Solutions
-
-| Error                       | Reason                                | Solution                                        |
-| --------------------------- | ------------------------------------- | ----------------------------------------------- |
-| Site not accessible         | Port 80 not allowed in security group | Enabled HTTP (Port 80) in EC2 security group    |
-| Docker permission denied    | User not added to docker group        | Added user to docker group & re-logged in       |
-| Container exits immediately | Missing `.env` file                   | Added environment file before running container |
-| Port already in use         | Another service using port 80         | Stopped conflicting container/service           |
-
----
-
-# 🔹 Step 4: Jenkins CI/CD Setup
-
-Installed Jenkins on EC2 and accessed via:
+Example:
 
 ```
-http://EC2_PUBLIC_IP:8080
-```
+<img width="1285" height="584" alt="dockerhub-cred-jenkins" src="https://github.com/user-attachments/assets/558c86e4-54e1-47c7-8f20-13f369cb980e" />
+<img width="1355" height="605" alt="jenkins pipeline" src="https://github.com/user-attachments/assets/f387e1c4-4960-4ff3-9800-cf01dca9aed0" />
+<img width="1365" height="559" alt="jenkins-docker-ec2 sg" src="https://github.com/user-attachments/assets/22c4229d-0629-4012-8634-f0e3e103235c" />
+<img width="1337" height="504" alt="Pipeline succesfull" src="https://github.com/user-attachments/assets/298bc357-4c50-4d8e-977c-96ef27d71b69" />
+<img width="940" height="386" alt="running containers" src="https://github.com/user-attachments/assets/8cbf8503-ed02-4942-944c-36e1301291e5" />
+<img width="1284" height="552" alt="Screenshot 2026-01-30 134040" src="https://github.com/user-attachments/assets/449c40fd-b601-479b-85db-32531e47665e" />
 
-Installed required plugins:
+## Learning Outcomes
 
-* Git Plugin
-* Docker Plugin
-* Pipeline Plugin
+Through this project I gained hands-on experience with:
 
----
-
-## Jenkins Pipeline
-
-The `Jenkinsfile` is included in this repository.
-
-The pipeline performs:
-
-1. Clone repository from GitHub
-2. Build Docker image
-3. Tag image
-4. Push image to Docker Hub
-5. Stop existing container (if running)
-6. Deploy updated container
+* Docker containerization
+* CI/CD pipeline automation using Jenkins
+* Deploying applications on AWS EC2
+* Connecting application services with AWS RDS
+* Managing Linux-based production environments
+* Troubleshooting deployment and runtime issues
 
 ---
 
-##  Errors Faced in Jenkins & Fixes
+## Future Improvements
 
-| Error                    | Reason                           | Solution                          |
-| ------------------------ | -------------------------------- | --------------------------------- |
-| Docker permission denied | Jenkins user not in docker group | `sudo usermod -aG docker jenkins` |
-| Git clone failed         | Missing GitHub credentials       | Configured credentials in Jenkins |
-| Docker push denied       | Not logged into Docker Hub       | Configured Docker credentials     |
-| Build failed             | Incorrect image name             | Corrected tagging format          |
+* Infrastructure provisioning using **Terraform or CloudFormation**
+* Container orchestration with **Kubernetes**
+* Monitoring using **Prometheus and Grafana**
+* Automated security scanning in the CI/CD pipeline
 
 ---
-
-# 🔥 Final Working CI/CD Flow
-
-1. Developer pushes code to GitHub
-2. Jenkins pipeline triggers automatically
-3. Docker image is built
-4. Image is pushed to Docker Hub
-5. EC2 pulls latest image
-6. Existing container is stopped
-7. New container runs with updated code
-8. Application becomes live on Public IP
-
----
-
-#  Key Learnings
-
-* Environment consistency is critical
-* Docker permissions are a common blocker
-* EC2 security groups must allow correct ports
-* Jenkins user configuration is essential
-* Proper image tagging avoids deployment issues
-* Clearing Laravel cache helps avoid production bugs
-
----
-
-#  DevOps Skills 
-
-✔ Docker Image Creation
-✔ Container Lifecycle Management
-✔ CI/CD Pipeline Automation
-✔ Jenkins Pipeline Scripting
-✔ AWS EC2 Deployment
-✔ Production Issue Debugging
-✔ Docker Hub Integration
-
----
-
-#  Future Improvements
-
-* Add Nginx reverse proxy
-* Add MySQL as a separate Docker container
-
-
-
-
+**Palak Khandelwal**
+DevOps-focused Software Engineer
+AWS Certified Solutions Architect – Associate
 
